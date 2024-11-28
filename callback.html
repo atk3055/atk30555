@@ -5,22 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Callback Page</title>
     <script>
-        // استخراج بيانات الـ URL
+        // استخراج الرمز (code) من رابط URL
         const urlParams = new URLSearchParams(window.location.search);
         const code = urlParams.get('code');
-        const state = urlParams.get('state');
 
-        // عرض البيانات في الصفحة (اختياري)
-        document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('code').textContent = code || 'No code found';
-            document.getElementById('state').textContent = state || 'No state found';
-        });
+        if (code) {
+            // إرسال الرمز إلى خادمك
+            fetch('https://your-server-url.com/exchange-code', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ code: code }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Server Response:', data);
+                document.body.innerHTML = `<h1>Login Successful!</h1><p>Welcome, ${data.username}!</p>`;
+            })
+            .catch(err => {
+                console.error('Error:', err);
+                document.body.innerHTML = '<h1>Login Failed</h1><p>There was an error processing your login.</p>';
+            });
+        } else {
+            document.body.innerHTML = '<h1>Invalid Request</h1><p>No code received.</p>';
+        }
     </script>
 </head>
 <body>
-    <h1>Callback Page</h1>
-    <p>Login successful! Here is your data:</p>
-    <p><strong>Code:</strong> <span id="code"></span></p>
-    <p><strong>State:</strong> <span id="state"></span></p>
+    <h1>Processing...</h1>
 </body>
 </html>
