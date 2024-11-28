@@ -4,9 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Callback Page</title>
+    <script>
+        // استخراج بيانات الـ URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+        const state = urlParams.get('state');
+
+        // عرض البيانات في الصفحة (اختياري)
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('code').textContent = code || 'No code found';
+            document.getElementById('state').textContent = state || 'No state found';
+        });
+    </script>
 </head>
 <body>
     <h1>Callback Page</h1>
-    <p>Login successful! You can now close this page or return to the app.</p>
+    <p>Login successful! Here is your data:</p>
+    <p><strong>Code:</strong> <span id="code"></span></p>
+    <p><strong>State:</strong> <span id="state"></span></p>
 </body>
 </html>
